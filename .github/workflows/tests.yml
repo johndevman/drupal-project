@@ -11,6 +11,16 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_DATABASE: drupal
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
     - uses: actions/checkout@v2
 
@@ -36,3 +46,10 @@ jobs:
     - name: Unit tests
       working-directory: web/core
       run: ../../vendor/bin/phpunit --group=test --testsuite=unit
+
+    - name: Kernel tests
+      working-directory: web/core
+      env:
+        SIMPLETEST_BASE_URL: http://localhost
+        SIMPLETEST_DB: mysql://root:secret@127.0.0.1/drupal
+      run: ../../vendor/bin/phpunit --group=test --testsuite=kernel
