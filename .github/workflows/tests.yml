@@ -33,8 +33,6 @@ jobs:
     - name: Code standards
       run: vendor/bin/phpcs web/modules/custom
 
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
-
-    # - name: Run test suite
-    #   run: composer run-script test
+    - name: Unit tests
+      working-directory: web/core
+      run: ../../vendor/bin/phpunit --group=test --testsuite=unit
