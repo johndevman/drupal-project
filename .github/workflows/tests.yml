@@ -40,6 +40,17 @@ jobs:
     - name: Kernel tests
       working-directory: web/core
       env:
-        SIMPLETEST_BASE_URL: http://localhost
+        SIMPLETEST_BASE_URL: http://localhost:8888
         SIMPLETEST_DB: mysql://root:secret@127.0.0.1:${{ job.services.mysql.ports[3306] }}/drupal
       run: ../../vendor/bin/phpunit --group=test --testsuite=kernel
+
+    - name: Start web server
+      working-directory: web
+      run: nohup php -S localhost:8888 .ht.router.php > phpd.log 2>&1 &
+
+    - name: Functional tests
+      working-directory: web/core
+      env:
+        SIMPLETEST_BASE_URL: http://localhost:8888
+        SIMPLETEST_DB: mysql://root:secret@127.0.0.1:${{ job.services.mysql.ports[3306] }}/drupal
+      run: ../../vendor/bin/phpunit --group=test --testsuite=functional
