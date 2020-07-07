@@ -38,4 +38,4 @@ jobs:
 #      run: ../../vendor/bin/phpunit --group=test --testsuite=kernel
 
     - name: Functional tests
-      run: docker-compose exec -w web/core drupal ../../vendor/bin/phpunit --group=test --testsuite=functional
+      run: docker-compose exec -T -w web/core drupal ../../vendor/bin/phpunit --group=test --testsuite=functional
