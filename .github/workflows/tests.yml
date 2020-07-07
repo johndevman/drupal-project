@@ -11,18 +11,11 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: secret
-          MYSQL_DATABASE: drupal
-        ports:
-          - 3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     steps:
     - uses: actions/checkout@v2
+
+    - name: Start containers
+      run: docker-compose up -d --build
 
     - name: Validate composer.json and composer.lock
       run: composer validate
@@ -40,17 +33,13 @@ jobs:
     - name: Kernel tests
       working-directory: web/core
       env:
-        SIMPLETEST_BASE_URL: http://localhost:8888
-        SIMPLETEST_DB: mysql://root:secret@127.0.0.1:${{ job.services.mysql.ports[3306] }}/drupal
+        SIMPLETEST_BASE_URL: http://localhost
+        SIMPLETEST_DB: mysql://root:secret@127.0.0.1/drupal
       run: ../../vendor/bin/phpunit --group=test --testsuite=kernel
-
-    - name: Start web server
-      working-directory: web
-      run: nohup php -S localhost:8888 .ht.router.php > phpd.log 2>&1 &
 
     - name: Functional tests
       working-directory: web/core
       env:
-        SIMPLETEST_BASE_URL: http://localhost:8888
-        SIMPLETEST_DB: mysql://root:secret@127.0.0.1:${{ job.services.mysql.ports[3306] }}/drupal
+        SIMPLETEST_BASE_URL: http://localhost
+        SIMPLETEST_DB: mysql://root:secret@127.0.0.1 }}/drupal
       run: ../../vendor/bin/phpunit --group=test --testsuite=functional
