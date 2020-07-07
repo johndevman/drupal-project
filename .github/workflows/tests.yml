@@ -17,12 +17,6 @@ jobs:
     - name: Start containers
       run: docker-compose -f docker-compose.ci.yml up -d --build
 
-    - name: Wait until MySQL container has been started
-      run: |
-        while ! mysqladmin ping -h"127.0.0.1" -P"3306" --silent; do
-          sleep 1
-        done
-
     - name: Validate composer.json and composer.lock
       run: composer validate
 
