@@ -2,7 +2,19 @@ version: '3'
 services:
   drupal:
     build: .
+    environment:
+      SIMPLETEST_BASE_URL: http://drupal
+      SIMPLETEST_DB: mysql://root:secret@mysql/drupal
     ports:
       - "80:80"
     volumes:
       - ./:/var/www/html:rw
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: drupal
+    ports:
+      - 3306
+    volumes:
+      - /var/lib/mysql

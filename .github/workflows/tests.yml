@@ -27,6 +27,12 @@ jobs:
     - name: Start containers
       run: docker-compose -f docker-compose.ci.yml up -d --build
 
+    - name: Wait until MySQL container has been started
+      run: |
+        while ! mysqladmin ping -h"127.0.0.1" -P"3306" --silent; do
+          sleep 1
+        done
+
     - name: Validate composer.json and composer.lock
       run: composer validate
 
@@ -36,20 +42,16 @@ jobs:
     - name: Code standards
       run: vendor/bin/phpcs web/modules/custom
 
-    - name: Unit tests
-      working-directory: web/core
-      run: ../../vendor/bin/phpunit --group=test --testsuite=unit
-
-    - name: Kernel tests
-      working-directory: web/core
-      env:
-        SIMPLETEST_BASE_URL: http://localhost
-        SIMPLETEST_DB: mysql://root:secret@127.0.0.1:${{ job.services.mysql.ports[3306] }}/drupal
-      run: ../../vendor/bin/phpunit --group=test --testsuite=kernel
+#    - name: Unit tests
+#      working-directory: web/core
+#      run: ../../vendor/bin/phpunit --group=test --testsuite=unit
+#
+#    - name: Kernel tests
+#      working-directory: web/core
+#      env:
+#        SIMPLETEST_BASE_URL: http://localhost
+#        SIMPLETEST_DB: mysql://root:secret@127.0.0.1:${{ job.services.mysql.ports[3306] }}/drupal
+#      run: ../../vendor/bin/phpunit --group=test --testsuite=kernel
 
     - name: Functional tests
-      working-directory: web/core
-      env:
-        SIMPLETEST_BASE_URL: http://localhost
-        SIMPLETEST_DB: mysql://root:secret@mysql:${{ job.services.mysql.ports[3306] }}/drupal
-      run: ../../vendor/bin/phpunit --group=test --testsuite=functional
+      run: docker-compose exec -w web/core drupal ../../vendor/bin/phpunit --group=test --testsuite=functional
