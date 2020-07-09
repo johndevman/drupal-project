@@ -43,5 +43,5 @@ jobs:
 #        SIMPLETEST_DB: mysql://root:secret@127.0.0.1:${{ job.services.mysql.ports[3306] }}/drupal
 #      run: ../../vendor/bin/phpunit --group=test --testsuite=kernel
 
-#    - name: Functional tests
-#      run: docker-compose exec -T -w /var/www/html/web/core drupal ../../vendor/bin/phpunit --group=test --testsuite=functional
+    - name: Functional tests
+      run: docker-compose exec -T -w /var/www/html/web/core drupal ../../vendor/bin/phpunit --group=test --testsuite=functional
