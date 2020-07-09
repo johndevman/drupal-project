@@ -6,7 +6,7 @@ services:
       SIMPLETEST_BASE_URL: http://drupal
       SIMPLETEST_DB: mysql://root:secret@mysql/drupal
     ports:
-      - "80:80"
+      - "80:8080"
     volumes:
       - ./:/var/www/html:rw
   mysql:
