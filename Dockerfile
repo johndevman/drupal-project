@@ -17,7 +17,7 @@ RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
 RUN a2enmod rewrite
 
-RUN chown -R www-data:www-data /var/www
+RUN chown -R 1001:1001 /var/www
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/web
 

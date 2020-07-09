@@ -23,25 +23,14 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: id
-      run: id
-
-    - name: ls -la
-      run: docker-compose exec -T drupal ls -la
-
     - name: Code standards
       run: vendor/bin/phpcs web/modules/custom
 
-#    - name: Unit tests
-#      working-directory: web/core
-#      run: ../../vendor/bin/phpunit --group=test --testsuite=unit
-#
-#    - name: Kernel tests
-#      working-directory: web/core
-#      env:
-#        SIMPLETEST_BASE_URL: http://localhost
-#        SIMPLETEST_DB: mysql://root:secret@127.0.0.1:${{ job.services.mysql.ports[3306] }}/drupal
-#      run: ../../vendor/bin/phpunit --group=test --testsuite=kernel
+    - name: Unit tests
+      run: docker-compose exec -T -w /var/www/html/web/core drupal ../../vendor/bin/phpunit --group=test --testsuite=unit
+
+    - name: Kernel tests
+      run: docker-compose exec -T -w /var/www/html/web/core drupal ../../vendor/bin/phpunit --group=test --testsuite=kernel
 
     - name: Functional tests
       run: docker-compose exec -T -w /var/www/html/web/core drupal ../../vendor/bin/phpunit --group=test --testsuite=functional
