@@ -3,7 +3,7 @@ services:
   drupal:
     build: .
     environment:
-      SIMPLETEST_BASE_URL: http://drupal
+      SIMPLETEST_BASE_URL: http://drupal:8080
       SIMPLETEST_DB: mysql://root:secret@mysql/drupal
     ports:
       - "80:8080"
