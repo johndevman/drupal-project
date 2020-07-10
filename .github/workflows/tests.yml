@@ -18,13 +18,13 @@ jobs:
       run: docker-compose -f docker-compose.ci.yml up -d --build
 
     - name: Validate composer.json and composer.lock
-      run: composer validate
+      run: docker-compose exec -T -w /var/www/html composer validate
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      run: docker-compose exec -T -w /var/www/html composer install --prefer-dist --no-progress --no-suggest
 
     - name: Code standards
-      run: vendor/bin/phpcs web/modules/custom
+      run: docker-compose exec -T -w /var/www/html vendor/bin/phpcs web/modules/custom
 
     - name: Unit tests
       run: docker-compose exec -T -w /var/www/html/web/core drupal ../../vendor/bin/phpunit --group=test --testsuite=unit

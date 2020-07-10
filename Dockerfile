@@ -15,6 +15,8 @@ RUN docker-php-source delete
 
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
 RUN a2enmod rewrite
 
 RUN chown -R 1001:1001 /var/www
