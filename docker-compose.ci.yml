@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   drupal:
-    build: .
+    image: johndevman/drupal-php-apache
     environment:
       SIMPLETEST_BASE_URL: http://drupal:8080
       SIMPLETEST_DB: mysql://root:secret@mysql/drupal
