@@ -24,7 +24,7 @@ jobs:
       run: curl http://localhost
 
     - name: Update Drupal core
-      run: docker-compose exec -T -w /var/www/html drupal COMPOSER_MEMORY_LIMIT=-1 composer update drupal/core-recommended drupal/core-dev --with-dependencies --prefer-dist --no-progress --no-suggest
+      run: docker-compose exec -T -w /var/www/html drupal composer update drupal/core-recommended drupal/core-dev --with-dependencies --prefer-dist --no-progress --no-suggest
 
     - name: Update database
       run: docker-compose exec -T -w /var/www/html drupal vendor/bin/drush updb -y

@@ -5,6 +5,7 @@ services:
     environment:
       SIMPLETEST_BASE_URL: http://drupal:8080
       SIMPLETEST_DB: mysql://root:secret@mysql/drupal
+      COMPOSER_MEMORY_LIMIT: -1
     ports:
       - "80:8080"
     volumes:
