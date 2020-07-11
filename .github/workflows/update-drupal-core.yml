@@ -18,7 +18,7 @@ jobs:
       run: docker-compose exec -T -w /var/www/html drupal composer install --prefer-dist --no-progress --no-suggest
 
     - name: Install Drupal
-      run: docker-compose exec -T -w /var/www/html drupal site:install --existing-config -y
+      run: docker-compose exec -T -w /var/www/html drupal vendor/bin/drush site:install --existing-config -y
 
     - name: Check homepage
       run: curl http://localhost
