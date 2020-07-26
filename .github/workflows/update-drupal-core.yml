@@ -37,3 +37,7 @@ jobs:
 
     - name: Create pull request
       uses: peter-evans/create-pull-request@v2
+      with:
+        commit-message: Update Drupal core
+        title: Update Drupal core
+        branch: chore/update-drupal-core
