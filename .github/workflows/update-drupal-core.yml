@@ -23,6 +23,9 @@ jobs:
     - name: Check homepage
       run: curl http://localhost
 
+    - name: Ensure sites/default is writeable
+      run: docker-compose exec -T -w /var/www/html chmod u+w web/sites/default
+
     - name: Update Drupal core
       run: docker-compose exec -T -w /var/www/html drupal composer update drupal/core-recommended drupal/core-dev --with-dependencies --prefer-dist --no-progress --no-suggest
 
