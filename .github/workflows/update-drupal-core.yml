@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Ensure sites/default is writeable
-      run: docker-compose exec -T -w /var/www/html bash -c "chmod u+w web/sites/default"
+      run: docker-compose exec -T -w /var/www/html drupal bash -c "chmod u+w web/sites/default"
 
     - name: Start containers
       run: docker-compose -f docker-compose.ci.yml up -d --build
